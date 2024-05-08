@@ -15,11 +15,11 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: "Set up the environment"
-      run: docker-compose -f docker-compose.yml up -d
+      run: docker-compose -f docker-compose.yml up -d      
     - name: "Wait for MySQL container to be running"
       run: |
         timeout=0
-        until docker inspect db >/dev/null 2>&1 || [ $timeout -eq 30 ]; do
+        until docker inspect restaurante-backend-tests_db_1 >/dev/null 2>&1 || [ $timeout -eq 30 ]; do
             timeout=$((timeout+1))
             sleep 1
         done
