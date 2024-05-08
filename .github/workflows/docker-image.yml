@@ -11,6 +11,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    env:
+      DB_CONTAINER: "restaurante-backend-tests_db_1"
+      EXPRESS_CONTAINER: "restaurante-backend-tests_node-app_1"
 
     steps:
     - uses: actions/checkout@v4
@@ -18,8 +21,9 @@ jobs:
       run: docker-compose -f docker-compose.yml up -d      
     - name: "Wait for MySQL container to be running"
       run: |
+        start_time=$(date +%s)
         timeout=0
-        until docker inspect restaurante-backend-tests_db_1 >/dev/null 2>&1 || [ $timeout -eq 30 ]; do
+        until docker inspect $DB_CONTAINER >/dev/null 2>&1 || [ $timeout -eq 30 ]; do
             timeout=$((timeout+1))
             sleep 1
         done
@@ -27,8 +31,11 @@ jobs:
             echo "Timeout reached waiting for MySQL container to be running"
             exit 1
         fi
+        end_time=$(date +%s)
+        echo "MySQL container took $((end_time - start_time)) seconds to be ready"
     - name: "Wait for Express server to be ready"
       run: |
+        start_time=$(date +%s)
         timeout=0
         until nc -z localhost 3000 || [ $timeout -eq 30 ]; do
             timeout=$((timeout+1))
@@ -38,5 +45,7 @@ jobs:
             echo "Timeout reached waiting for Express server to be ready"
             exit 1
         fi
+        end_time=$(date +%s)
+        echo "Express server took $((end_time - start_time)) seconds to be ready"
     - name: "Test server"
-      run: docker exec -it npm run test 
+      run: docker exec -it $EXPRESS_CONTAINER npm run test 
