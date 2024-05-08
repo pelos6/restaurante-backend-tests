@@ -46,5 +46,12 @@ jobs:
       - name: "Build Docker Image"
         run: docker build -t juanda99/node-app:latest ./app
         # This assumes your service using the built image is named 'your_service'
-      - name: "Scan Docker Image"
-        run: trivy  image --severity CRITICAL,HIGH --no-progress juanda99/node-app
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'juanda99/node-app:latest'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
