@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  build:
+  tests:
 
     runs-on: ubuntu-latest
     env:
@@ -23,7 +23,7 @@ jobs:
       run: |
         start_time=$(date +%s)
         timeout=0
-        until docker compose logs 2>&1 | grep -q "Connected to MySQL database" || [ $timeout -eq 30 ]; do
+        until docker compose node-app logs 2>&1 | grep -q "Connected to MySQL database" || [ $timeout -eq 30 ]; do
             timeout=$((timeout+1))
             sleep 1
         done
@@ -34,4 +34,4 @@ jobs:
         end_time=$(date +%s)
         echo "Express server took $((end_time - start_time)) seconds to be ready"
     - name: "Test server"
-      run: docker exec $EXPRESS_CONTAINER npm run test 
+      run: docker compose exec node-app npm run test 
