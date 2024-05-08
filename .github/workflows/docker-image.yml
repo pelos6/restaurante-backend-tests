@@ -18,14 +18,7 @@ jobs:
     steps:
     - name: "Print environment variables"
       run: |
-        set -o allexport
-        source .env
-        set +o allexport
-        echo "MYSQL_HOST: $MYSQL_HOST"
-        echo "MYSQL_USER: $MYSQL_USER"
-        echo "MYSQL_PASSWORD: $MYSQL_PASSWORD"
-        echo "MYSQL_DATABASE: $MYSQL_DATABASE"
-        echo "EXPRESS_PORT: $EXPRESS_PORT"
+        env
     - uses: actions/checkout@v4
     - name: "Set up the environment"
       run: docker-compose -f docker-compose.yml up -d      
