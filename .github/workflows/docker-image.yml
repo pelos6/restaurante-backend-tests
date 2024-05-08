@@ -48,6 +48,8 @@ jobs:
         end_time=$(date +%s)
         echo "Express server took $((end_time - start_time)) seconds to be ready"
     - name: "View Express container logs"
-      run: docker compose logs 
+      run: |
+        sleep 20
+        docker compose logs 
     - name: "Test server"
       run: docker exec $EXPRESS_CONTAINER npm run test 
