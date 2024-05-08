@@ -37,7 +37,7 @@ jobs:
       run: |
         start_time=$(date +%s)
         timeout=0
-        until nc -z localhost 3000 || [ $timeout -eq 30 ]; do
+        until docker compose logs 2>&1 | grep -q "Connected to MySQL database" || [ $timeout -eq 30 ]; do
             timeout=$((timeout+1))
             sleep 1
         done
