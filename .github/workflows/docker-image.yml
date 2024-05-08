@@ -11,29 +11,21 @@ jobs:
   tests:
 
     runs-on: ubuntu-latest
-    env:
-      DB_CONTAINER: "restaurante-backend-tests_db_1"
-      EXPRESS_CONTAINER: "restaurante-backend-tests_node-app_1"
-
     steps:
     - uses: actions/checkout@v4
     - name: "Set up the environment"
       run: docker-compose -f docker-compose.yml up -d 
     - name: "Show services"
       run: docker-compose ps --services
-    - name: "Show logs"
-      run: docker-compose logs node-app
-    - name: "Show all logs"
-      run: docker-compose logs 
     - name: "Wait for Express server to be ready"
       run: |
         start_time=$(date +%s)
         timeout=0
-        until docker compose node-app logs 2>&1 | grep -q "Connected to MySQL database" || [ $timeout -eq 30 ]; do
+        until docker compose node-app logs 2>&1 | grep -q "Connected to MySQL database" || [ $timeout -eq 100 ]; do
             timeout=$((timeout+1))
             sleep 1
         done
-        if [ $timeout -eq 30 ]; then
+        if [ $timeout -eq 100 ]; then
             echo "Timeout reached waiting for Express server to be ready"
             exit 1
         fi
