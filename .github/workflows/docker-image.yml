@@ -19,20 +19,6 @@ jobs:
     - uses: actions/checkout@v4
     - name: "Set up the environment"
       run: docker-compose -f docker-compose.yml up -d      
-    - name: "Wait for MySQL container to be running"
-      run: |
-        start_time=$(date +%s)
-        timeout=0
-        until docker inspect $DB_CONTAINER >/dev/null 2>&1 || [ $timeout -eq 30 ]; do
-            timeout=$((timeout+1))
-            sleep 1
-        done
-        if [ $timeout -eq 30 ]; then
-            echo "Timeout reached waiting for MySQL container to be running"
-            exit 1
-        fi
-        end_time=$(date +%s)
-        echo "MySQL container took $((end_time - start_time)) seconds to be ready"
     - name: "Wait for Express server to be ready"
       run: |
         start_time=$(date +%s)
@@ -47,9 +33,5 @@ jobs:
         fi
         end_time=$(date +%s)
         echo "Express server took $((end_time - start_time)) seconds to be ready"
-    - name: "View Express container logs"
-      run: |
-        sleep 20
-        docker compose logs 
     - name: "Test server"
       run: docker exec $EXPRESS_CONTAINER npm run test 
