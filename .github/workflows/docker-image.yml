@@ -23,6 +23,11 @@ jobs:
         timeout=0
         until docker compose node-app logs 2>&1 | grep -q "Connected to MySQL database" || [ $timeout -eq 100 ]; do
             timeout=$((timeout+1))
+            echo "*********************************"
+            docker compose node-app logs
+            echo "***********"
+            docker compose logs
+            
             sleep 1
         done
         if [ $timeout -eq 100 ]; then
