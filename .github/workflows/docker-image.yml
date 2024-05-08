@@ -16,9 +16,6 @@ jobs:
       EXPRESS_CONTAINER: "restaurante-backend-tests_node-app_1"
 
     steps:
-    - name: "Print environment variables"
-      run: |
-        env
     - uses: actions/checkout@v4
     - name: "Set up the environment"
       run: docker-compose -f docker-compose.yml up -d      
@@ -50,5 +47,8 @@ jobs:
         fi
         end_time=$(date +%s)
         echo "Express server took $((end_time - start_time)) seconds to be ready"
+    - name: "View Express container logs"
+      run: |
+          docker logs ${EXPRESS_CONTAINER}
     - name: "Test server"
       run: docker exec $EXPRESS_CONTAINER npm run test 
