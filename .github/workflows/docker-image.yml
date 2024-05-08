@@ -20,7 +20,11 @@ jobs:
     - name: "Set up the environment"
       run: docker-compose -f docker-compose.yml up -d 
     - name: "Show services"
-      run: docker-compose ps    
+      run: docker-compose ps --services
+    - name: "Show logs"
+      run: docker-compose logs node-app
+    - name: "Show all logs"
+      run: docker-compose logs 
     - name: "Wait for Express server to be ready"
       run: |
         start_time=$(date +%s)
