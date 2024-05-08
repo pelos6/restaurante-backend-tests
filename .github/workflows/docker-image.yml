@@ -48,7 +48,7 @@ jobs:
       - name: "Identify Image Name"
         # This assumes your service using the built image is named 'your_service'
         run: |
-          IMAGE_NAME=$(docker inspect --format '{{.Config.Image}}' node-app)
+          IMAGE_NAME=$(docker-compose ps -q node-app | xargs docker inspect --format='{{ .Image }}' | cut -d ':' -f 2)
           echo "## Image to scan: $IMAGE_NAME"
       - name: "Scan Docker Image"
         run: trivy --exit-code 0 --severity HIGH --no-progress "$IMAGE_NAME"
