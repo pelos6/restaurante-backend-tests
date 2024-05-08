@@ -1,0 +1,42 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: "Set up the environment"
+      run: docker-compose -f docker-compose.yml up -d
+    - name: "Wait for MySQL container to be running"
+      run: |
+        timeout=0
+        until docker inspect db >/dev/null 2>&1 || [ $timeout -eq 30 ]; do
+            timeout=$((timeout+1))
+            sleep 1
+        done
+        if [ $timeout -eq 30 ]; then
+            echo "Timeout reached waiting for MySQL container to be running"
+            exit 1
+        fi
+    - name: "Wait for Express server to be ready"
+      run: |
+        timeout=0
+        until nc -z localhost 3000 || [ $timeout -eq 30 ]; do
+            timeout=$((timeout+1))
+            sleep 1
+        done
+        if [ $timeout -eq 30 ]; then
+            echo "Timeout reached waiting for Express server to be ready"
+            exit 1
+        fi
+    - name: "Test server"
+      run: docker exec -it npm run test 
