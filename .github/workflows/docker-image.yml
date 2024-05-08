@@ -49,6 +49,6 @@ jobs:
         echo "Express server took $((end_time - start_time)) seconds to be ready"
     - name: "View Express container logs"
       run: |
-          docker logs ${EXPRESS_CONTAINER}
+          docker logs $EXPRESS_CONTAINER
     - name: "Test server"
       run: docker exec $EXPRESS_CONTAINER npm run test 
