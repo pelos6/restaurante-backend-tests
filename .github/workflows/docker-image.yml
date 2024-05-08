@@ -45,14 +45,8 @@ jobs:
           wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
           echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -cs) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
           sudo apt-get update && sudo apt-get install trivy
-      - name: "Idocker images"
+      - name: "Build Docker Image"
+        run: docker build -t juanda99/node-app:latest ./app
         # This assumes your service using the built image is named 'your_service'
-        run: |
-          docker images
-      - name: "Identify Image Name"
-        # This assumes your service using the built image is named 'your_service'
-        run: |
-          IMAGE=$(docker images | grep "node-app" | awk '{print $3}')
-          echo "## Image to scan: $IMAGE"
       - name: "Scan Docker Image"
-        run: trivy  image --severity CRITICAL,HIGH --no-progress $IMAGE
+        run: trivy  image --severity CRITICAL,HIGH --no-progress juanda99/node-app
