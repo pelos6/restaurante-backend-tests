@@ -7,9 +7,8 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   tests:
-
+    name: "Integration testing"
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -33,3 +32,23 @@ jobs:
         echo "Express server took $((end_time - start_time)) seconds to be ready"
     - name: "Test server"
       run: docker compose exec node-app npm run test 
+      
+  trivy_scan:
+    name: "Trivy Scan"
+    runs-on: ubuntu-latest
+    needs: tests
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v4
+      - name: "Install Trivy"
+        run: |
+          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+          echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -cs) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
+          sudo apt-get update && sudo apt-get install trivy
+      - name: "Identify Image Name"
+        # This assumes your service using the built image is named 'your_service'
+        run: |
+          IMAGE_NAME=$(docker inspect --format '{{.Config.Image}}' node-app)
+          echo "## Image to scan: $IMAGE_NAME"
+      - name: "Scan Docker Image"
+        run: trivy --exit-code 0 --severity HIGH --no-progress "$IMAGE_NAME"
