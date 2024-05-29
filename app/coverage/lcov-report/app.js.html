@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">39.28% </span>
+                <span class="strong">46.42% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>22/56</span>
+                <span class='fraction'>26/56</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">12.5% </span>
+                <span class="strong">18.75% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/16</span>
+                <span class='fraction'>3/16</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">39.28% </span>
+                <span class="strong">46.42% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>22/56</span>
+                <span class='fraction'>26/56</span>
             </div>
         
             
@@ -208,29 +208,29 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -330,13 +330,13 @@ function connectWithRetry() {
 &nbsp;
   // Attempt to connect
   db.connect((err) =&gt; {
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
-<span class="cstat-no" title="statement not covered" >      console.error('Error connecting to MySQL:', err)</span>
+    if (err) {
+      console.error('Error connecting to MySQL:', err)
       // Retry after 5 seconds
-<span class="cstat-no" title="statement not covered" >      console.log('Retrying in 5 seconds...')</span>
-<span class="cstat-no" title="statement not covered" >      setTimeout(connectWithRetry, 5000)</span>
-    } else {
-      console.log('Connected to MySQL database')
+      console.log('Retrying in 5 seconds...')
+      setTimeout(connectWithRetry, 5000)
+    } else <span class="missing-if-branch" title="else path not taken" >E</span>{
+<span class="cstat-no" title="statement not covered" >      console.log('Connected to MySQL database')</span>
     }
   })
 }
@@ -349,9 +349,9 @@ connectWithRetry()
 // Get all categories
 app.get('/categories', (req, res) =&gt; {
   db.query('SELECT * FROM categorias', (err, results) =&gt; {
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
-<span class="cstat-no" title="statement not covered" >      console.error('Error executing query:', err)</span>
-<span class="cstat-no" title="statement not covered" >      res.status(500).json({ error: 'Internal Server Error' })</span>
+    if (err) {
+      console.error('Error executing query:', err)
+      res.status(500).json({ error: 'Internal Server Error' })
     } else {
       res.json(results)
     }
@@ -439,7 +439,7 @@ module.exports = app
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-05-07T11:49:43.190Z
+                at 2024-05-29T08:54:48.440Z
             </div>
         <script src="prettify.js"></script>
         <script>

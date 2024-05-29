@@ -6,7 +6,7 @@ require('dotenv').config()
 const app = express()
 app.use(cors())
 const port = 3000
-let db
+let db, server
 
 // Function to establish a connection with retries
 function connectWithRetry() {

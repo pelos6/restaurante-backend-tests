@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon --inspect=0.0.0.0:9229 app.js",
+    "test-old": "./node_modules/.bin/jest--coverage",
     "test": "jest --coverage"
   },
   "dependencies": {
